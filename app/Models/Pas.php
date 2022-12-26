@@ -16,4 +16,19 @@ class Pas extends Model
         'boja',
         'tezina'
     ];
+
+    public function ugovor()
+    {
+        return $this->hasOne(Ugovor::class);
+    }
+
+    public function adopted()
+    {
+        if ($this-ugovor()) {
+            return true;
+        }
+
+        return false;
+    }
+    
 }

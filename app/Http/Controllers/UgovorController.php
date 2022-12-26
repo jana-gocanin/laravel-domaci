@@ -2,84 +2,51 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UgovorJson;
 use App\Models\Ugovor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UgovorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function getAll()
     {
-        //
+        $ugovori = Ugovor::all();
+
+        return UgovorJson::collection($ugovori);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function add(Request $request)
     {
-        //
+        $requestUgovor = $request->only('potpisano', 'datum_potpisa', 'pas_id', 'udomitelj_id');
+
+        $validator = Validator::make($requestUgovor, [
+            'pas_id' => 'unique:ugovors,pas_id'
+        ]);
+
+        if ($validator->fails()) {
+            return "ne meze";
+        }
+
+        $ugovor = Ugovor::create($requestUgovor);
+
+        return new UgovorJson($ugovor);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function getById($id)
     {
-        //
+        $ugovor = Ugovor::findOrFail($id);
+
+        return new UgovorJson($ugovor);
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Ugovor  $ugovor
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Ugovor $ugovor)
+    public function delete($id)
     {
-        //
-    }
+        $ugovor = Ugovor::destroy($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Ugovor  $ugovor
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Ugovor $ugovor)
-    {
-        //
-    }
+        dd($ugovor);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Ugovor  $ugovor
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Ugovor $ugovor)
-    {
-        //
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Ugovor  $ugovor
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Ugovor $ugovor)
-    {
-        //
-    }
+    
 }

@@ -17,6 +17,8 @@ class VerifyCsrfToken extends Middleware
         'pas/add',
         'pas/delete/*',
         'udomitelj/add',
-        'udomitelj/delete/*'
+        'udomitelj/delete/*',
+        'ugovor/add',
+        'ugovor/delete/*'
     ];
 }

@@ -13,12 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('ugovors', function (Blueprint $table) {
-            $table->id();
-            $table->boolean('potpisano')->default(0);
-            $table->timestamp('datum_potpisa')->useCurrent();
-            $table->foreignId('udomitelj_id')->nullable()->constrained()->nullOnDelete();
-            $table->timestamps();
+        Schema::table('ugovors', function (Blueprint $table) {
+            $table->foreignId('pas_id')->unique()->nullable()->constrained()->nullOnDelete();
         });
     }
 
@@ -29,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ugovors');
+        Schema::table('ugovors', function (Blueprint $table) {
+            $table->dropColumn('pas_id');
+        });
     }
 };

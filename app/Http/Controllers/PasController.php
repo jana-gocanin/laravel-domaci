@@ -27,6 +27,8 @@ class PasController extends Controller
     {
         $pas = Pas::findOrFail($id);
 
+        dd($pas->ugovor()->first());
+
         return new PasJson($pas);
 
     }
@@ -37,5 +39,12 @@ class PasController extends Controller
 
         dd($pas);
 
+    }
+
+    public function getAllUnadopted()
+    {
+        $psi = Pas::doesntHave('ugovor')->get();
+
+        return PasJson::collection($psi);
     }
 }

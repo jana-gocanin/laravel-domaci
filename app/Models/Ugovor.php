@@ -16,8 +16,5 @@ class Ugovor extends Model
         'udomitelj_id'
     ];
 
-    public function pas()
-    {
-        return $this->belongsTo(Pas::class);
-    }
+    
 }

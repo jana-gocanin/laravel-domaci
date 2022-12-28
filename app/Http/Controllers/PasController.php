@@ -34,14 +34,14 @@ class PasController extends Controller
         $requestPas = $request->only('ime', 'godine', 'boja', 'tezina');
         $pas = Pas::create($requestPas);
 
-        return new PasJson($pas);
+        return response()->json(['Pas je uspesno kreiran.', new PasJson($pas)]);
     }
 
     public function getById($id)
     {
         $pas = Pas::findOrFail($id);
 
-        dd($pas->ugovor()->first());
+        //dd($pas->ugovor()->first());
 
         return new PasJson($pas);
 

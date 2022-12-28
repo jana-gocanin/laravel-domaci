@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\UdomiteljJson;
 use App\Models\Udomitelj;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UdomiteljController extends Controller
 {
@@ -39,79 +40,30 @@ class UdomiteljController extends Controller
         dd($udomitelj);
 
     }
-    // /**
-    //  * Display a listing of the resource.
-    //  *
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function index()
-    // {
-    //     //
-    // }
+    
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(),[
+            'ime'=>'required|string|max:255',
+            'prezime'=>'required|string|max:255',
+            'datum_rodjenja'=>'required|date',
+            'email'=>'required|email'
+        ]);
 
-    // /**
-    //  * Show the form for creating a new resource.
-    //  *
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function create()
-    // {
-    //     //
-    // }
+        if($validator->fails())
+        {
+            return response()->json($validator->errors());
+        }
 
-    // /**
-    //  * Store a newly created resource in storage.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function store(Request $request)
-    // {
-    //     //
-    // }
+        $udomitelj = Udomitelj::findOrFail($id);
 
-    // /**
-    //  * Display the specified resource.
-    //  *
-    //  * @param  \App\Models\Udomitelj  $udomitelj
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function show(Udomitelj $udomitelj)
-    // {
-    //     //
-    // }
+        $udomitelj->ime = $request->ime;
+        $udomitelj->prezime = $request->prezime;
+        $udomitelj->datum_rodjenja = $request->datum_rodjenja;
+        $udomitelj->email = $request->email;
 
-    // /**
-    //  * Show the form for editing the specified resource.
-    //  *
-    //  * @param  \App\Models\Udomitelj  $udomitelj
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function edit(Udomitelj $udomitelj)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Update the specified resource in storage.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @param  \App\Models\Udomitelj  $udomitelj
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function update(Request $request, Udomitelj $udomitelj)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Remove the specified resource from storage.
-    //  *
-    //  * @param  \App\Models\Udomitelj  $udomitelj
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function destroy(Udomitelj $udomitelj)
-    // {
-    //     //
-    // }
+        $udomitelj->save();
+        
+        return response()->json(['Udomitelj je uspesno azuriran.', new UdomiteljJson($udomitelj)]);
+    }
 }

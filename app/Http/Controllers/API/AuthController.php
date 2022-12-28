@@ -48,4 +48,11 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Zdravo ' .$user->name. ', dobrodosli u virtuelni azil!', 'access_token' =>$token, 'token_type' => 'Bearer']);
     }
+
+    public function logout()
+    {
+        auth()->user()->tokens()->delete();
+    
+        return ['message' => "Odjavili ste se."];
+    }
 }

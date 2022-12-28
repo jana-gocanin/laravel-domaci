@@ -19,6 +19,18 @@ class UdomiteljController extends Controller
 
     public function add(Request $request)
     {
+        $validator = Validator::make($request->all(),[
+            'ime'=>'required|string|max:255',
+            'prezime'=>'required|string|max:255',
+            'datum_rodjenja'=>'required|date',
+            'email'=>'required|email'
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json($validator->errors());
+        }
+        
         $requestUdomitelj = $request->only('ime', 'prezime', 'datum_rodjenja', 'email');
         $udomitelj = Udomitelj::create($requestUdomitelj);
 
@@ -37,7 +49,7 @@ class UdomiteljController extends Controller
     {
         $udomitelj = Udomitelj::destroy($id);
 
-        dd($udomitelj);
+        return response()->json('Udomitelj je uspesno obrisan');
 
     }
     

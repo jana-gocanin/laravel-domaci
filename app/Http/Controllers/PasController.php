@@ -18,7 +18,20 @@ class PasController extends Controller
 
     public function add(Request $request)
     {
-        $requestPas = $request->only('ime', 'godina', 'boja', 'tezina');
+
+        $validator = Validator::make($request->all(),[
+            'ime'=>'required|string|max:255',
+            'godine'=>'required',
+            'boja'=>'required|string|max:50',
+            'tezina'=>'required'
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json($validator->errors());
+        }
+
+        $requestPas = $request->only('ime', 'godine', 'boja', 'tezina');
         $pas = Pas::create($requestPas);
 
         return new PasJson($pas);
@@ -38,7 +51,7 @@ class PasController extends Controller
     {
         $pas = Pas::destroy($id);
 
-        dd($pas);
+        return response()->json('Pas je uspesno obrisan');
 
     }
 
@@ -71,7 +84,7 @@ class PasController extends Controller
         $pas->tezina = $request->tezina;
 
         $pas->save();
-        
+
         return response()->json(['Pas je uspesno azuriran.', new PasJson($pas)]);
     }
 }

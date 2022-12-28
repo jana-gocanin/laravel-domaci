@@ -25,7 +25,7 @@ class UgovorController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return "ne meze";
+            return "Pas je vec udomljen";
         }
 
         $ugovor = Ugovor::create($requestUgovor);
@@ -45,7 +45,7 @@ class UgovorController extends Controller
     {
         $ugovor = Ugovor::destroy($id);
 
-        dd($ugovor);
+        return response()->json('Ugovor je uspesno obrisan');
 
     }
     

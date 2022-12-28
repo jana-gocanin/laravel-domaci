@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PasController;
 use App\Http\Controllers\UdomiteljController;
 use App\Http\Controllers\UgovorController;
+use App\Http\Controllers\API\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,3 +38,6 @@ Route::get('ugovor/getAll', [UgovorController::class, 'getAll'])->name('ugovor.g
 Route::post('ugovor/add', [UgovorController::class, 'add'])->name('ugovor.add');
 Route::get('ugovor/id/{id}', [UgovorController::class, 'getById'])->name('ugovor.getById');
 Route::delete('ugovor/delete/{id}', [UgovorController::class, 'delete'])->name('ugovor.delete');
+
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
